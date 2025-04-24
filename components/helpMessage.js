@@ -1,3 +1,8 @@
+const escapeMarkdownV2 = (text) => {
+    return text
+        .replace(/([\\*_\[\]()~`>#+\-=|{}.!^,])+/g, '\\$1');
+};
+
 const helpMessage = `🤖 Ecco cosa posso fare per te:
 
 📝 /text _testo_
@@ -21,4 +26,4 @@ Eseguo una ricerca su Google con le parole fornite.
 ℹ️ /help
 Mostro questo messaggio.`;
 
-module.exports = helpMessage;
+module.exports = escapeMarkdownV2(helpMessage);

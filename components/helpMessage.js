@@ -1,29 +1,24 @@
-const escapeMarkdownV2 = (text) => {
-    return text
-        .replace(/([\\*_\[\]()~`>#+\-=|{}.!^,])+/g, '\\$1');
-};
-
 const helpMessage = `🤖 Ecco cosa posso fare per te:
 
-📝 /text _testo_
+📝 /text TESTO
 Ti restituisco il messaggio che hai scritto.
 
-💱 /eur _numero_
+💱 /eur NUMERO
 Converto da *Euro* a *Dollari*.
 
-💵 /usd _numero_
+💵 /usd NUMERO
 Converto da *Dollari* a *Euro*.
 
-📨 /spam _numero_
+📨 /spam NUMERO
 Invio un messaggio ripetuto più volte (massimo 10).
 
-🌤️ /weather _città_
+🌤️ /weather CITTÀ
 Ti dico il meteo attuale nella città indicata.
 
-🔍 /google _ricerca_
+🔍 /google RICERCA
 Eseguo una ricerca su Google con le parole fornite.
 
 ℹ️ /help
 Mostro questo messaggio.`;
 
-module.exports = escapeMarkdownV2(helpMessage);
+module.exports = helpMessage;

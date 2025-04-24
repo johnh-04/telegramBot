@@ -7,13 +7,13 @@ require('./components/connect.js')(bot);
 
 const exchangeRate = 1.125; // Esempio di tasso di cambio EUR/USD
 
-bot.command('help', ctx => ctx.reply(helpMessage), { parse_mode: 'MarkdownV2' });
+bot.command('help', ctx => ctx.reply(helpMessage));
 
 bot.command('text', ctx => {
 
     const args = ctx.message.text.split(' ').slice(1);
     if (args.length === 0)
-        return ctx.reply('Devi inserire un messaggio\! (/text _testo_)', { parse_mode: 'MarkdownV2' });
+        return ctx.reply('Devi inserire un messaggio! (/text TESTO)');
     ctx.reply(args.join(' '));
 
 });
@@ -22,7 +22,7 @@ bot.command('eur', ctx => {
 
     const value = parseFloat(ctx.message.text.split(' ')[1]);
     if (isNaN(value) || value <= 0)
-        return ctx.reply('Devi inserire un numero valido\! (/eur _numero_)', { parse_mode: 'MarkdownV2' });
+        return ctx.reply('Devi inserire un numero valido! (/eur NUMERO)');
     ctx.reply(`${(value * exchangeRate).toFixed(2)} $`);
 
 });
@@ -31,7 +31,7 @@ bot.command('usd', ctx => {
 
     const value = parseFloat(ctx.message.text.split(' ')[1]);
     if (isNaN(value) || value <= 0)
-        return ctx.reply('Devi inserire un numero valido\! (/usd _numero_)', { parse_mode: 'MarkdownV2' });
+        return ctx.reply('Devi inserire un numero valido! (/usd NUMERO)');
     ctx.reply(`${(value / exchangeRate).toFixed(2)} €`);
 
 });
@@ -41,7 +41,7 @@ bot.command('spam', ctx => {
     let count = parseInt(ctx.message.text.split(' ')[1]);
 
     if (isNaN(count) || count <= 0)
-        return ctx.reply('Devi inserire un numero valido <=10\! (/spam _numero_)', { parse_mode: 'MarkdownV2' });
+        return ctx.reply('Devi inserire un numero valido <=10! (/spam NUMERO)');
 
     if (count > 10) count = 10;
 
@@ -75,7 +75,7 @@ bot.command('weather', async ctx => {
     const city = args.slice(1).join(' ');
 
     if (!city)
-        return ctx.reply('Devi inserire una città valida\! (/weather _città_)', { parse_mode: 'MarkdownV2' });
+        return ctx.reply('Devi inserire una città valida! (/weather CITTÀ)');
 
     try {
 
@@ -112,7 +112,7 @@ bot.command('google', ctx => {
 
     const args = ctx.message.text.split(' ').slice(1);
     if (args.length === 0)
-        return ctx.reply('Devi inserire la tua ricerca dopo /google (/google _ricerca_)', { parse_mode: 'MarkdownV2' });
+        return ctx.reply('Devi inserire una ricerca valida! (/google RICERCA)');
     const query = args.join('+');
     ctx.reply(`🔍 https://www.google.com/search?q=${query}`);
 

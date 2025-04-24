@@ -19,32 +19,32 @@ module.exports = function (bot) {
 
     // Quando il bot parte, notifica tutti gli utenti -> commentato per evitare spam
     const onlineMsg = '🤖 Ehi, sono online!';
-    db.query('SELECT userId FROM users', (err, rows) => {
+    db.query('SELECT iduser FROM users', (err, rows) => {
         if (err) return console.error(err);
         rows.forEach(row => {
-            const chatId = row.userId;
+            const chatId = row.iduser;
             //axios.get(`https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage?chat_id=${chatId}&text=${onlineMsg}`);
         });
     });
 
     bot.start(ctx => {
 
-        const firstName = ctx.from.first_name || 'noName';
+        const firstname = ctx.from.first_name || 'noName';
         const username = ctx.from.username || 'noUsername';
-        const userId = ctx.from.id;
+        const iduser = ctx.from.id;
 
-        console.log(`Utente: ${firstName} - ${username} - ${userId}`);
+        console.log(`Utente: ${firstname} - ${username} - ${iduser}`);
 
-        ctx.reply(`Ciao ${firstName}! Usa /help per vedere i comandi disponibili.`);
+        ctx.reply(`Ciao ${firstname}! Usa /help per vedere i comandi disponibili.`);
 
-        db.query('SELECT userId FROM users WHERE userId = ?', [userId], (err, rows) => {
+        db.query('SELECT iduser FROM users WHERE iduser = ?', [iduser], (err, rows) => {
 
             if (err) return console.error(err);
 
             if (rows.length === 0) {
                 db.query(
-                    'INSERT INTO users (firstName, userName, userId) VALUES (?, ?, ?)',
-                    [firstName, username, userId],
+                    'INSERT INTO users (firstname, username, iduser) VALUES (?, ?, ?)',
+                    [firstname, username, iduser],
                     err => {
                         if (err) return console.error(err);
                         console.log('Nuovo utente registrato!');

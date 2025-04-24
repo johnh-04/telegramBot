@@ -1,9 +1,9 @@
 const { Telegraf } = require('telegraf');
 const axios = require('axios');
 require('dotenv').config();
-const helpMessage = require('./helpMessage');
+const helpMessage = require('./components/helpMessage.js');
 const bot = new Telegraf(process.env.BOT_TOKEN);
-require('./connect.js')(bot);
+require('./components/connect.js')(bot);
 
 const exchangeRate = 1.125; // Esempio di tasso di cambio EUR/USD
 

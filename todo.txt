@@ -1,0 +1,18 @@
+-un messaggio che sta prima di un altro deve essere stampato per primo -> function sync
+-risolvi problema per centauri o cancella e ricrea
+-aggiungi /stop per arresto forzato
+-fai una funzione che controlla num
+-cambia text con echo (decidi)
+-aggiungi orario in console e altrove
+-errore spam -> throw error -> catch
+-menu a comparsa su tastiera o sopra chat -> messaggio sopra chat
+-selezione comando con / (escono tutti)
+-scelta di ricevere notifica (/notify on - off)
+-contatti
+-leggere messaggi inviati a lui
+-prova /start quando è tutto spento e vedi come va (per database)
+-implementa funzioni
+-messaggio quando si spegne
+-lista funzioni
+-server su pc vecchi o raspberry e usa il localhost
+-schermo vert

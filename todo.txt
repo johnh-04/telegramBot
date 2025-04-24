@@ -6,6 +6,8 @@
 -scelta di ricevere notifica (/notify on - off)
 -stampare utenti che fanno operazioni su bot
 -leggere messaggi inviati a lui
--messaggio quando si spegne
+-messaggio quando si spegne (mando io in broadcast)
 -messaggi broadcast a tutti gli utenti
--cambiare emoji meteo in base al meteo
+-mandare agli utenti lista aggiornamenti
+-runnare in locale senza intaccare il cloud
+-risolvi conflitto tra avvio in produzione (railway) e sviluppo (localhost)

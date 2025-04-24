@@ -13,7 +13,7 @@ bot.command('text', ctx => {
 
     const args = ctx.message.text.split(' ').slice(1);
     if (args.length === 0)
-        return ctx.reply('Devi inserire un messaggio! (/text <messaggio>)');
+        return ctx.reply('Devi inserire un messaggio! (/text __testo__)');
     ctx.reply(args.join(' '));
 
 });
@@ -22,7 +22,7 @@ bot.command('eur', ctx => {
 
     const value = parseFloat(ctx.message.text.split(' ')[1]);
     if (isNaN(value) || value <= 0)
-        return ctx.reply('Devi inserire un numero valido! (/eur <num>)');
+        return ctx.reply('Devi inserire un numero valido! (/eur __numero__)');
     ctx.reply(`${(value * exchangeRate).toFixed(2)} $`);
 
 });
@@ -31,7 +31,7 @@ bot.command('usd', ctx => {
 
     const value = parseFloat(ctx.message.text.split(' ')[1]);
     if (isNaN(value) || value <= 0)
-        return ctx.reply('Devi inserire un numero valido! (/usd <num>)');
+        return ctx.reply('Devi inserire un numero valido! (/usd __numero__)');
     ctx.reply(`${(value / exchangeRate).toFixed(2)} €`);
 
 });
@@ -41,7 +41,7 @@ bot.command('spam', ctx => {
     let count = parseInt(ctx.message.text.split(' ')[1]);
 
     if (isNaN(count) || count <= 0)
-        return ctx.reply('Devi inserire un numero valido <=10! (/spam <num>)');
+        return ctx.reply('Devi inserire un numero valido <=10! (/spam __numero__)');
 
     if (count > 10) count = 10;
 
@@ -52,11 +52,30 @@ bot.command('spam', ctx => {
 
 bot.command('weather', async ctx => {
 
+    const weatherEmoji = (weatherCondition) => {
+        switch (weatherCondition) {
+            case 'clear':
+                return '☀️';  // Sereno
+            case 'clouds':
+                return '☁️';  // Nuvoloso
+            case 'rain':
+                return '🌧️';  // Pioggia
+            case 'snow':
+                return '❄️';  // Neve
+            case 'thunderstorm':
+                return '⛈️';  // Temporale
+            case 'drizzle':
+                return '🌦️';  // Pioggerella
+            default:
+                return '🌈';  // Per condizioni non definite
+        }
+    };
+
     const args = ctx.message.text.split(' ');
     const city = args.slice(1).join(' ');
 
     if (!city)
-        return ctx.reply('Devi inserire una città valida! (/weather <città>)');
+        return ctx.reply('Devi inserire una città valida! (/weather __città__)');
 
     try {
 
@@ -72,11 +91,19 @@ bot.command('weather', async ctx => {
         const data = res.data;
         const description = data.weather[0].description;
         const temp = data.main.temp;
-        ctx.reply(`☀️ Il meteo a ${city} è: ${description}, temperatura: ${temp}°C`);
+        const weatherCondition = data.weather[0].main.toLowerCase();
+        const emoji = weatherEmoji(weatherCondition);
+        ctx.reply(`${emoji} Il meteo a ${city} è: ${description}, temperatura: ${temp}°C`);
 
     } catch (err) {
-        console.error(err);
-        ctx.reply('⚠️ Città non trovata o errore nel recupero dati.');
+
+        if (err.response && err.response.status === 404)
+            ctx.reply(`❌ Città "${city}" non trovata. Prova a controllare l'ortografia.`);
+        else {
+            //console.error('Errore Weather:', err);
+            ctx.reply('⚠️ Errore nel recupero del meteo. Riprova più tardi.');
+        }
+
     }
 
 });
@@ -85,7 +112,7 @@ bot.command('google', ctx => {
 
     const args = ctx.message.text.split(' ').slice(1);
     if (args.length === 0)
-        return ctx.reply('Inserisci la tua ricerca dopo /google (/google <parole>)');
+        return ctx.reply('Inserisci la tua ricerca dopo /google (/google __ricerca__)');
     const query = args.join('+');
     ctx.reply(`🔍 https://www.google.com/search?q=${query}`);
 

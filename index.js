@@ -134,6 +134,9 @@ bot.command('city', async ctx => {
     //ctx.reply('📍 Scrivi il nome della città per cui vuoi ricevere ogni sera le previsioni per il giorno dopo:');
     //bot.once
 
+    const args = ctx.message.text.split(' ');
+    const city = args.slice(1).join(' ');
+
     if (!city)
         return ctx.reply('Devi inserire una città valida! (/city CITTÀ)');
 
@@ -221,7 +224,7 @@ cron.schedule('0 21 * * *', async () => {
         } catch (err) {
             console.error(`Errore meteo per ${city}:`, err.message);
         }
-        
+
     }
 
     console.log('Meteo giornaliero inviato.');

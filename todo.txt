@@ -15,3 +15,5 @@
 -collega db railway a bot locale
 -tasso cambio eur/usd automatico
 -implementa i comandi con reply/once -> comando + scrivere contenuto dopo aver inviato il comando
+-togliere la possibilità di avere la città quindi riportarla a vuoto e non ricevere notifiche
+-ristruttura il codice perché ci sono varie ripetizioni (connessione al db, emoji meteo...)

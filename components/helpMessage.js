@@ -15,6 +15,9 @@ Invio un messaggio ripetuto più volte (massimo 10).
 🌤️ /weather CITTÀ
 Ti dico il meteo attuale nella città indicata.
 
+🏙️ /city CITTÀ
+Imposta la tua città preferita per ricevere ogni sera alle 21 il meteo del giorno successivo.
+
 🔍 /google RICERCA
 Eseguo una ricerca su Google con le parole fornite.
 

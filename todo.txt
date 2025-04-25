@@ -11,3 +11,7 @@
 -mandare agli utenti lista aggiornamenti
 -runnare in locale senza intaccare il cloud
 -risolvi conflitto tra avvio in produzione (railway) e sviluppo (localhost)
+-formatta "TESTO" e altri in corsivo
+-collega db railway a bot locale
+-tasso cambio eur/usd automatico
+-implementa i comandi con reply/once -> comando + scrivere contenuto dopo aver inviato il comando

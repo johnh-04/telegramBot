@@ -23,7 +23,8 @@ module.exports = function (bot) {
         if (err) return console.error(err);
         rows.forEach(row => {
             const chatId = row.iduser;
-            axios.get(`https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage?chat_id=${chatId}&text=${onlineMsg}`);
+            //axios.get(`https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage?chat_id=${chatId}&text=${onlineMsg}`);
+            //avviene uno spam di messaggi e crusha il bot
         });
     });
 

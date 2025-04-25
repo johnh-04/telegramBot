@@ -3,6 +3,7 @@ const axios = require('axios');
 require('dotenv').config();
 const cron = require('node-cron');
 const helpMessage = require('./components/helpMessage.js');
+console.log("BOT_TOKEN:", process.env.BOT_TOKEN?.slice(0, 10));
 const bot = new Telegraf(process.env.BOT_TOKEN);
 require('./components/connect.js')(bot);
 

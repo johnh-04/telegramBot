@@ -5,6 +5,7 @@ const cron = require('node-cron');
 const helpMessage = require('./components/helpMessage.js');
 console.log("BOT_TOKEN:", process.env.BOT_TOKEN?.slice(0, 10));
 const bot = new Telegraf(process.env.BOT_TOKEN);
+const { CronJob } = require('cron');
 require('./components/connect.js')(bot);
 
 const mysql = require('mysql2');
@@ -175,62 +176,79 @@ bot.command('city', async ctx => {
 });
 
 // Cronjob alle 21:00 per inviare meteo del giorno dopo
-const mysql2 = require('mysql2/promise');
-cron.schedule('0 21 * * *', async () => {
+const job = new CronJob(
+    '45 9 * * *', // ogni giorno alle 21:00
+    async () => {
 
-    const conn = await mysql2.createConnection({
-        host: process.env.DB_HOST || 'localhost',
-        user: process.env.DB_USER || 'root',
-        password: process.env.DB_PASSWORD || '',
-        database: process.env.DB_NAME || 'telegrambot',
-    });
-
-    const [rows] = await conn.execute('SELECT iduser, city FROM users WHERE city IS NOT NULL AND city <> ""');
-    await conn.end();
-
-    for (const { iduser, city } of rows) {
+        console.log('🕘 Inizio invio previsioni giornaliere...');
 
         try {
 
-            const res = await axios.get(`https://api.openweathermap.org/data/2.5/forecast`, {
-                params: {
-                    q: city,
-                    appid: process.env.WEATHER_API_KEY,
-                    lang: 'it',
-                    units: 'metric'
-                }
+            const conn = await mysql2.createConnection({
+                host: process.env.DB_HOST || 'localhost',
+                user: process.env.DB_USER || 'root',
+                password: process.env.DB_PASSWORD || '',
+                database: process.env.DB_NAME || 'telegrambot',
             });
 
-            // Trova dati del giorno seguente (primo blocco con data domani)
-            const today = new Date();
-            const tomorrow = new Date(today);
-            tomorrow.setDate(today.getDate() + 1);
-            const targetDate = tomorrow.toISOString().split('T')[0];
+            const [rows] = await conn.execute('SELECT iduser, city FROM users WHERE city IS NOT NULL AND city <> ""');
+            await conn.end();
 
-            const forecasts = res.data.list.filter(f => f.dt_txt.startsWith(targetDate));
-            if (forecasts.length === 0) continue;
+            if (rows.length === 0) {
+                console.log('Nessun utente con città impostata.');
+                return;
+            }
 
-            const forecast = forecasts[Math.floor(forecasts.length / 2)];
-            const emojiMap = {
-                clear: '☀️', clouds: '☁️', rain: '🌧️', snow: '❄️',
-                thunderstorm: '⛈️', drizzle: '🌦️'
-            };
-            const icon = forecast.weather[0].main.toLowerCase();
-            const emoji = emojiMap[icon] || '🌈';
+            for (const { iduser, city } of rows) {
 
-            const msg = `📅 *Previsioni per ${targetDate} a ${city}*\n${emoji} ${forecast.weather[0].description}, temperatura media: ${forecast.main.temp}°C`;
+                try {
+                    const res = await axios.get(`https://api.openweathermap.org/data/2.5/forecast`, {
+                        params: {
+                            q: city,
+                            appid: process.env.WEATHER_API_KEY,
+                            lang: 'it',
+                            units: 'metric'
+                        }
+                    });
 
-            await bot.telegram.sendMessage(iduser, msg);
+                    const today = new Date();
+                    const tomorrow = new Date(today);
+                    tomorrow.setDate(today.getDate() + 1);
+                    const targetDate = tomorrow.toISOString().split('T')[0];
 
-        } catch (err) {
-            console.error(`Errore meteo per ${city}:`, err.message);
+                    const forecasts = res.data.list.filter(f => f.dt_txt.startsWith(targetDate));
+                    if (forecasts.length === 0) continue;
+
+                    const forecast = forecasts[Math.floor(forecasts.length / 2)];
+                    const emojiMap = {
+                        clear: '☀️', clouds: '☁️', rain: '🌧️',
+                        snow: '❄️', thunderstorm: '⛈️', drizzle: '🌦️'
+                    };
+                    const icon = forecast.weather[0].main.toLowerCase();
+                    const emoji = emojiMap[icon] || '🌈';
+
+                    const msg = `📅 Previsioni per ${targetDate} a ${city}\n${emoji} ${forecast.weather[0].description}, temperatura media prevista: ${forecast.main.temp.toFixed(1)}°C`;
+
+                    await bot.telegram.sendMessage(iduser, msg);
+
+                } catch (err) {
+                    console.error(`Errore meteo per ${city}:`, err.response?.data || err.message);
+                }
+
+            }
+
+            console.log('✅ Meteo giornaliero inviato.');
+
+        } catch (error) {
+            console.error('Errore generale durante l’invio previsioni:', error.message);
         }
+    },
+    null,
+    true, // Avvia subito il job
+    'Europe/Rome' // Fuso orario europeo
+);
 
-    }
-
-    console.log('Meteo giornaliero inviato.');
-
-});
+job.start(); // Avvia il cronjob
 
 bot.command('google', ctx => {
 

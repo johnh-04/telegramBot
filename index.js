@@ -175,10 +175,10 @@ bot.command('city', async ctx => {
 
 });
 
-// Cronjob alle 21:00 per inviare meteo del giorno dopo
+// Cronjob alle 6:50 per inviare meteo del giorno
 const mysql2 = require('mysql2/promise');
 const job = new CronJob(
-    '50 9 * * *', // ogni giorno alle 21:00
+    '03 10 * * *', // ogni giorno alle 6:50
     async () => {
 
         console.log('🕘 Inizio invio previsioni giornaliere...');
@@ -212,23 +212,31 @@ const job = new CronJob(
                         }
                     });
 
+                    //const today = new Date();
+                    //const tomorrow = new Date(today);
                     const today = new Date();
-                    const tomorrow = new Date(today);
-                    tomorrow.setDate(today.getDate() + 1);
-                    const targetDate = tomorrow.toISOString().split('T')[0];
+                    const targetDate = today.toISOString().split('T')[0];
 
+                    // Filtra previsioni per oggi
                     const forecasts = res.data.list.filter(f => f.dt_txt.startsWith(targetDate));
                     if (forecasts.length === 0) continue;
 
+                    // Prendi la previsione centrale del giorno
                     const forecast = forecasts[Math.floor(forecasts.length / 2)];
+
                     const emojiMap = {
-                        clear: '☀️', clouds: '☁️', rain: '🌧️',
-                        snow: '❄️', thunderstorm: '⛈️', drizzle: '🌦️'
+                        clear: '☀️',
+                        clouds: '☁️',
+                        rain: '🌧️',
+                        snow: '❄️',
+                        thunderstorm: '⛈️',
+                        drizzle: '🌦️',
                     };
+
                     const icon = forecast.weather[0].main.toLowerCase();
                     const emoji = emojiMap[icon] || '🌈';
 
-                    const msg = `📅 Previsioni per ${targetDate} a ${city}\n${emoji} ${forecast.weather[0].description}, temperatura media prevista: ${forecast.main.temp.toFixed(1)}°C`;
+                    const msg = `📅 Previsioni per oggi a ${city}\n${emoji} ${forecast.weather[0].description}, temperatura media prevista: ${forecast.main.temp.toFixed(1)}°C`;
 
                     await bot.telegram.sendMessage(iduser, msg);
 

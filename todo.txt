@@ -16,4 +16,5 @@
 -tasso cambio eur/usd automatico
 -implementa i comandi con reply/once -> comando + scrivere contenuto dopo aver inviato il comando
 -togliere la possibilità di avere la città quindi riportarla a vuoto e non ricevere notifiche
+-risolvere il crush che si crea quando dice che è online
 -ristruttura il codice perché ci sono varie ripetizioni (connessione al db, emoji meteo...)

@@ -16,7 +16,7 @@ Invio un messaggio ripetuto più volte (massimo 10).
 Ti dico il meteo attuale nella città indicata.
 
 🏙️ /city CITTÀ
-Imposta la tua città preferita per ricevere ogni sera alle 21 il meteo del giorno successivo.
+Imposta la tua città preferita per ricevere ogni mattina il meteo giornaliero.
 
 🔍 /google RICERCA
 Eseguo una ricerca su Google con le parole fornite.

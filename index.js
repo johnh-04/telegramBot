@@ -176,8 +176,9 @@ bot.command('city', async ctx => {
 });
 
 // Cronjob alle 21:00 per inviare meteo del giorno dopo
+const mysql2 = require('mysql2/promise');
 const job = new CronJob(
-    '45 9 * * *', // ogni giorno alle 21:00
+    '50 9 * * *', // ogni giorno alle 21:00
     async () => {
 
         console.log('🕘 Inizio invio previsioni giornaliere...');

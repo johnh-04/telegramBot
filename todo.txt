@@ -9,6 +9,7 @@
 -messaggio quando si spegne (mando io in broadcast)
 -messaggi broadcast a tutti gli utenti
 -mandare agli utenti lista aggiornamenti
+
 -runnare in locale senza intaccare il cloud
 -risolvi conflitto tra avvio in produzione (railway) e sviluppo (localhost)
 -formatta "TESTO" e altri in corsivo
@@ -18,3 +19,5 @@
 -togliere la possibilità di avere la città quindi riportarla a vuoto e non ricevere notifiche
 -risolvere il crush che si crea quando dice che è online
 -ristruttura il codice perché ci sono varie ripetizioni (connessione al db, emoji meteo...)
+-mettere /weather dove trova il meteo in una funzione e utilizzarla anche nel meteo giornaliero e strutturalo in modo tale da poter richiamare
+con una variabile il meteo del giorno dopo

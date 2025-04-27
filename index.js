@@ -1,14 +1,24 @@
+require('dotenv').config();
+require('./components/connect.js')(bot);
 const { Telegraf } = require('telegraf');
 const axios = require('axios');
-require('dotenv').config();
 const cron = require('node-cron');
+const { CronJob } = require('cron');
+const mysql = require('mysql2');
 const helpMessage = require('./components/helpMessage.js');
+
 console.log("BOT_TOKEN:", process.env.BOT_TOKEN?.slice(0, 10));
 const bot = new Telegraf(process.env.BOT_TOKEN);
-const { CronJob } = require('cron');
-require('./components/connect.js')(bot);
 
-const mysql = require('mysql2');
+const emojiMap = {
+    clear: '☀️',
+    clouds: '☁️',
+    rain: '🌧️',
+    snow: '❄️',
+    thunderstorm: '⛈️',
+    drizzle: '🌦️',
+};
+
 const db = mysql.createConnection({
     host: process.env.DB_HOST || 'localhost',
     user: process.env.DB_USER || 'root',
@@ -25,13 +35,16 @@ bot.telegram.setMyCommands([
     { command: 'usd', description: 'Converte $ in €' },
     { command: 'spam', description: 'Spam testuale' },
     { command: 'weather', description: 'Meteo attuale' },
-    { command: 'city', description: 'Imposta città preferita per il meteo giornaliero' },
+    { command: 'setcity', description: 'Imposta città preferita per il meteo giornaliero' },
+    { command: 'unsetcity', description: 'Rimuovi città preferita per il meteo giornaliero' },
     { command: 'google', description: 'Ricerca su Google' },
     { command: 'help', description: 'Mostra tutti i comandi' }
 ]);
 
+// Help
 bot.command('help', ctx => ctx.reply(helpMessage));
 
+// Text
 bot.command('text', ctx => {
 
     const args = ctx.message.text.split(' ').slice(1);
@@ -41,6 +54,7 @@ bot.command('text', ctx => {
 
 });
 
+// Eur
 bot.command('eur', ctx => {
 
     const value = parseFloat(ctx.message.text.split(' ')[1]);
@@ -50,6 +64,7 @@ bot.command('eur', ctx => {
 
 });
 
+// Usd
 bot.command('usd', ctx => {
 
     const value = parseFloat(ctx.message.text.split(' ')[1]);
@@ -59,6 +74,7 @@ bot.command('usd', ctx => {
 
 });
 
+// Spam
 bot.command('spam', ctx => {
 
     let count = parseInt(ctx.message.text.split(' ')[1]);
@@ -73,26 +89,8 @@ bot.command('spam', ctx => {
 
 });
 
+// Weather
 bot.command('weather', async ctx => {
-
-    const weatherEmoji = (weatherCondition) => {
-        switch (weatherCondition) {
-            case 'clear':
-                return '☀️';  // Sereno
-            case 'clouds':
-                return '☁️';  // Nuvoloso
-            case 'rain':
-                return '🌧️';  // Pioggia
-            case 'snow':
-                return '❄️';  // Neve
-            case 'thunderstorm':
-                return '⛈️';  // Temporale
-            case 'drizzle':
-                return '🌦️';  // Pioggerella
-            default:
-                return '🌈';  // Per condizioni non definite
-        }
-    };
 
     const args = ctx.message.text.split(' ');
     const city = args.slice(1).join(' ');
@@ -114,8 +112,8 @@ bot.command('weather', async ctx => {
         const data = res.data;
         const description = data.weather[0].description;
         const temp = data.main.temp;
-        const weatherCondition = data.weather[0].main.toLowerCase();
-        const emoji = weatherEmoji(weatherCondition);
+        const icon = data.weather[0].main.toLowerCase();
+        const emoji = emojiMap[icon] || '🌈';
         ctx.reply(`${emoji} Il meteo a ${city} è: ${description}, temperatura: ${temp}°C`);
 
     } catch (err) {
@@ -131,7 +129,8 @@ bot.command('weather', async ctx => {
 
 });
 
-bot.command('city', async ctx => {
+// Setcity
+bot.command('setcity', async ctx => {
 
     //ctx.reply('📍 Scrivi il nome della città per cui vuoi ricevere ogni sera le previsioni per il giorno dopo:');
     //bot.once
@@ -140,7 +139,7 @@ bot.command('city', async ctx => {
     const city = args.slice(1).join(' ');
 
     if (!city)
-        return ctx.reply('Devi inserire una città valida! (/city CITTÀ)');
+        return ctx.reply('Devi inserire una città valida! (/setcity CITTÀ)');
 
     try {
 
@@ -175,10 +174,30 @@ bot.command('city', async ctx => {
 
 });
 
-// Cronjob alle 6:50 per inviare meteo del giorno
+// Unsetcity
+bot.command('unsetcity', ctx => {
+
+    try {
+
+        const iduser = ctx.from.id;
+
+        db.query('UPDATE users SET city = ? WHERE iduser = ?', ["", iduser], err => {
+            if (err) return ctx.reply('❌ Errore nel salvataggio. Riprova.');
+            ctx.reply(`✅ Città rimossa con successo! Non riceverai più il meteo giornaliero.`);
+        });
+
+        console.log("Città rimossa con successo.");
+
+    } catch (err) {
+        ctx.reply('⚠️ Errore. Riprova più tardi.');
+    }
+
+});
+
+// Cronjob alle 6:00 per inviare meteo del giorno
 const mysql2 = require('mysql2/promise');
 const job = new CronJob(
-    '50 6 * * *', // ogni giorno alle 6:50
+    '00 6 * * *', // ogni giorno alle 6:00
     async () => {
 
         console.log('🕘 Inizio invio previsioni giornaliere...');
@@ -224,15 +243,6 @@ const job = new CronJob(
                     // Prendi la previsione centrale del giorno
                     const forecast = forecasts[Math.floor(forecasts.length / 2)];
 
-                    const emojiMap = {
-                        clear: '☀️',
-                        clouds: '☁️',
-                        rain: '🌧️',
-                        snow: '❄️',
-                        thunderstorm: '⛈️',
-                        drizzle: '🌦️',
-                    };
-
                     const icon = forecast.weather[0].main.toLowerCase();
                     const emoji = emojiMap[icon] || '🌈';
 
@@ -259,6 +269,7 @@ const job = new CronJob(
 
 job.start(); // Avvia il cronjob
 
+// Google
 bot.command('google', ctx => {
 
     const args = ctx.message.text.split(' ').slice(1);
@@ -269,9 +280,12 @@ bot.command('google', ctx => {
 
 });
 
+// *Sticker*
 bot.on('sticker', ctx => ctx.reply('👍'));
 
+// Lala
 bot.command('lala', context => context.reply('land'));
+
 
 bot.launch()
     .then(() => console.log('Bot avviato correttamente!'))

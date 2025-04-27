@@ -8,7 +8,10 @@
 -leggere messaggi inviati a lui
 -messaggio quando si spegne (mando io in broadcast)
 -messaggi broadcast a tutti gli utenti
--mandare agli utenti lista aggiornamenti
+-mandare agli utenti lista aggiornamenti versioni
+-visualizza città salvata
+-gestire il caso in cui weather api non dia risultati (limite raggiunto)
+
 
 -runnare in locale senza intaccare il cloud
 -risolvi conflitto tra avvio in produzione (railway) e sviluppo (localhost)
@@ -16,7 +19,6 @@
 -collega db railway a bot locale
 -tasso cambio eur/usd automatico
 -implementa i comandi con reply/once -> comando + scrivere contenuto dopo aver inviato il comando
--togliere la possibilità di avere la città quindi riportarla a vuoto e non ricevere notifiche
 -risolvere il crush che si crea quando dice che è online
 -ristruttura il codice perché ci sono varie ripetizioni (connessione al db, emoji meteo...)
 -mettere /weather dove trova il meteo in una funzione e utilizzarla anche nel meteo giornaliero e strutturalo in modo tale da poter richiamare

@@ -9,8 +9,9 @@
 -messaggio quando si spegne (mando io in broadcast)
 -messaggi broadcast a tutti gli utenti
 -mandare agli utenti lista aggiornamenti versioni
--visualizza città salvata
+-visualizza città salvata / stampare città appena rimossa dai preferiti con unset
 -gestire il caso in cui weather api non dia risultati (limite raggiunto)
+-sostituisci e applica singolo carattere ai "/'/`
 
 
 -runnare in locale senza intaccare il cloud

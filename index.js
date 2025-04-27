@@ -6,7 +6,7 @@ const { CronJob } = require('cron');
 const mysql = require('mysql2');
 const helpMessage = require('./components/helpMessage.js');
 
-console.log("BOT_TOKEN:", process.env.BOT_TOKEN?.slice(0, 10));
+console.log('BOT_TOKEN:', process.env.BOT_TOKEN?.slice(0, 10));
 const bot = new Telegraf(process.env.BOT_TOKEN);
 require('./components/connect.js')(bot);
 
@@ -153,13 +153,13 @@ bot.command('setcity', async ctx => {
         });
 
         const data = res.data;
-        console.log("Città salvata con successo: ", data.name);
+        console.log('Città salvata con successo: ', data.name);
 
         const iduser = ctx.from.id;
 
         db.query('UPDATE users SET city = ? WHERE iduser = ?', [city, iduser], err => {
             if (err) return ctx.reply('❌ Errore nel salvataggio. Riprova.');
-            ctx.reply(`✅ Perfetto! Riceverai ogni sera alle 21 il meteo di ${city} per il giorno seguente.`);
+            ctx.reply(`✅ Perfetto! Riceverai ogni mattina il meteo giornaliero di ${city}.`);
         });
 
     } catch (err) {
@@ -186,7 +186,7 @@ bot.command('unsetcity', ctx => {
             ctx.reply(`✅ Città rimossa con successo! Non riceverai più il meteo giornaliero.`);
         });
 
-        console.log("Città rimossa con successo.");
+        console.log('Città rimossa con successo.');
 
     } catch (err) {
         ctx.reply('⚠️ Errore. Riprova più tardi.');

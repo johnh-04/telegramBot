@@ -9,11 +9,11 @@
 -messaggio quando si spegne (mando io in broadcast)
 -messaggi broadcast a tutti gli utenti
 -mandare agli utenti lista aggiornamenti versioni
--visualizza città salvata / stampare città appena rimossa dai preferiti con unset
+-visualizza città salvata / stampare città appena rimossa dai preferiti con unset / caso: hai già salvato una città se si vuole reinserire la stessa
 -gestire il caso in cui weather api non dia risultati (limite raggiunto)
 -sostituisci e applica singolo carattere ai "/'/`
 
-
+-gestire caso default di comando non valido
 -runnare in locale senza intaccare il cloud
 -risolvi conflitto tra avvio in produzione (railway) e sviluppo (localhost)
 -formatta "TESTO" e altri in corsivo
@@ -24,3 +24,7 @@
 -ristruttura il codice perché ci sono varie ripetizioni (connessione al db, emoji meteo...)
 -mettere /weather dove trova il meteo in una funzione e utilizzarla anche nel meteo giornaliero e strutturalo in modo tale da poter richiamare
 con una variabile il meteo del giorno dopo
+
+ehi sono online! problema
+meteo giorno dopo a richiesta
+meteo giornaliero che dice tutte le ore e non solo centrale

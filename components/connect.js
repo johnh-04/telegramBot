@@ -19,13 +19,14 @@ module.exports = function (bot) {
 
     // Quando il bot parte, notifica tutti gli utenti -> commentato per evitare spam
     const onlineMsg = '🤖 Ehi, sono online!';
-    db.query('SELECT iduser FROM users', (err, rows) => {
+    /*db.query('SELECT iduser FROM users', (err, rows) => {
         if (err) return console.error(err);
         rows.forEach(row => {
             const chatId = row.iduser;
             //axios.get(`https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage?chat_id=${chatId}&text=${onlineMsg}`);
         });
-    });
+    });*/
+    axios.get(`https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage?chat_id=${634992918}&text=${onlineMsg}`); //notifico solo me stesso per evitare spam
 
     bot.start(ctx => {
 

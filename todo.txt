@@ -1,30 +1,26 @@
--un messaggio che sta prima di un altro deve essere stampato per primo -> function sync
--fai una funzione generica che controlli num
+-funzione generica che controlli se risposta è un numero (no ripetizioni)
+-funzione del meteo da usare in /weather e in cronjob per fare singola chiamata del meteo (no ripetizioni) -> variabile meteo per il giorno desiderato*
 -cambia text con echo (decidi)
--menu a comparsa su tastiera o sopra chat -> messaggio sopra chat
--selezione comando con / (escono tutti) direttamente in input
--scelta di ricevere notifica (/notify on - off)
--stampare utenti che fanno operazioni su bot
--leggere messaggi inviati a lui
--messaggio quando si spegne (mando io in broadcast)
--messaggi broadcast a tutti gli utenti
--mandare agli utenti lista aggiornamenti versioni
--visualizza città salvata / stampare città appena rimossa dai preferiti con unset / caso: hai già salvato una città se si vuole reinserire la stessa
+-scelta di ricevere notifica ("/notify on - off") / scelta di ricevere aggiornamenti su nuove funzionalità (crea template simil helpMessage)
+-controllare e stampare in console operazioni che utenti fanno sul bot (leggere messaggi e mittenti che parlano con bot, per ogni funzione fai una stampa dell'operazione in console con contenuto messaggio e username. ogni log: mittente + operazione)
+-funzione per mandare messaggi in broadcast a tutti gli utenti (quindi anche per notificare spegnimento)
+-visualizza città salvata / stampare città appena rimossa dai preferiti con unset (non puoi fare unset se non c'è città settata) / non si può salvare la stessa città che hai già nel database (manda avviso)
+-quando trova la città perché inserita -> prendere e inserire nel server il nome completo e preciso della città selezionata con le maiuscole giuste
 -gestire il caso in cui weather api non dia risultati (limite raggiunto)
--sostituisci e applica singolo carattere ai "/'/`
-
--gestire caso default di comando non valido
--runnare in locale senza intaccare il cloud
--risolvi conflitto tra avvio in produzione (railway) e sviluppo (localhost)
--formatta "TESTO" e altri in corsivo
--collega db railway a bot locale
+-sostituisci e applica singolo carattere ai "/'/` (trova uno standard da rispettare)
+-risoluzione bug in console
+-gestire caso default di comando inesistente
+-runnare in locale senza intaccare il cloud -> risolvi conflitto tra avvio in produzione (railway) e sviluppo (localhost) [collega db railway a bot locale]
+-formatta "TESTO" e altri in corsivo da helpMessage e comandi
 -tasso cambio eur/usd automatico
--implementa i comandi con reply/once -> comando + scrivere contenuto dopo aver inviato il comando
--risolvere il crush che si crea quando dice che è online
--ristruttura il codice perché ci sono varie ripetizioni (connessione al db, emoji meteo...)
--mettere /weather dove trova il meteo in una funzione e utilizzarla anche nel meteo giornaliero e strutturalo in modo tale da poter richiamare
-con una variabile il meteo del giorno dopo
+-implementa i comandi con reply/once -> per potere scrivere sia in singola riga cmd e ctx che poter scrivere ctx dopo aver inviato cmd
+-risolvere il crush che si crea quando dice che è online (spam e crush) -> invia la notifica solo a me per il momento
+-gestire chiusura di mysql per inattività (timeout)
+https://chatgpt.com/share/680f91a1-63c8-8010-8173-2468f6bda01d
 
-ehi sono online! problema
-meteo giorno dopo a richiesta
-meteo giornaliero che dice tutte le ore e non solo centrale
+*meteo giorno dopo a richiesta ("/tmrweather")
+meteo giornaliero che dice tutte le ore e non solo centrale [vento (direzione e valore) e umidità]
+
+esp32 con confronto dati, AI, SATELLITI, ASTRONOMIA, QUANTUM
+https://chatgpt.com/share/680f84da-e04c-8010-9404-ba58effae6ad
+https://chatgpt.com/share/680e5b77-278c-8010-aefe-a746c38c6849

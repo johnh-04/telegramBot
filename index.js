@@ -200,7 +200,7 @@ const job = new CronJob(
     '00 6 * * *', // ogni giorno alle 6:00
     async () => {
 
-        console.log('🕘 Inizio invio previsioni giornaliere...');
+        console.log('Inizio invio previsioni giornaliere...');
 
         try {
 
@@ -256,7 +256,7 @@ const job = new CronJob(
 
             }
 
-            console.log('✅ Meteo giornaliero inviato.');
+            console.log('Meteo giornaliero inviato.');
 
         } catch (error) {
             console.error('Errore generale durante l’invio previsioni:', error.message);

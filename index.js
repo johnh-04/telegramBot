@@ -10,15 +10,6 @@ console.log('BOT_TOKEN:', process.env.BOT_TOKEN?.slice(0, 10));
 const bot = new Telegraf(process.env.BOT_TOKEN);
 require('./components/connect.js')(bot);
 
-const emojiMap = {
-    clear: '☀️',
-    clouds: '☁️',
-    rain: '🌧️',
-    snow: '❄️',
-    thunderstorm: '⛈️',
-    drizzle: '🌦️',
-};
-
 const db = mysql.createConnection({
     host: process.env.DB_HOST || 'localhost',
     user: process.env.DB_USER || 'root',
@@ -98,34 +89,9 @@ bot.command('weather', async ctx => {
     if (!city)
         return ctx.reply('Devi inserire una città valida! (/weather CITTÀ)');
 
-    try {
-
-        const res = await axios.get(`https://api.openweathermap.org/data/2.5/weather`, {
-            params: {
-                q: city,
-                appid: process.env.WEATHER_API_KEY,
-                lang: 'it',
-                units: 'metric'
-            }
-        });
-
-        const data = res.data;
-        const description = data.weather[0].description;
-        const temp = data.main.temp;
-        const icon = data.weather[0].main.toLowerCase();
-        const emoji = emojiMap[icon] || '🌈';
-        ctx.reply(`${emoji} Il meteo a ${city} è: ${description}, temperatura: ${temp}°C`);
-
-    } catch (err) {
-
-        if (err.response && err.response.status === 404)
-            ctx.reply(`❌ Città "${city}" non trovata. Prova a controllare l'ortografia.`);
-        else {
-            //console.error('Errore Weather:', err);
-            ctx.reply('⚠️ Errore nel recupero del meteo. Riprova più tardi.');
-        }
-
-    }
+    let message = `📍 Il meteo a *${city}* è \n`;
+    message = forecast(city, message);
+    ctx.reply(`${message}`);
 
 });
 
@@ -166,9 +132,8 @@ bot.command('setcity', async ctx => {
 
         if (err.response && err.response.status === 404)
             ctx.reply(`❌ Città "${city}" non trovata. Prova a controllare l'ortografia.`);
-        else {
+        else
             ctx.reply('⚠️ Errore. Riprova più tardi.');
-        }
 
     }
 
@@ -196,8 +161,9 @@ bot.command('unsetcity', ctx => {
 
 // Cronjob alle 6:00 per inviare meteo del giorno
 const mysql2 = require('mysql2/promise');
+const forecast = require('./components/forecast.js');
 const job = new CronJob(
-    '00 6 * * *', // ogni giorno alle 6:00
+    '25 12 * * *', // ogni giorno alle 6:00
     async () => {
 
         console.log('Inizio invio previsioni giornaliere...');
@@ -221,38 +187,9 @@ const job = new CronJob(
 
             for (const { iduser, city } of rows) {
 
-                try {
-                    const res = await axios.get(`https://api.openweathermap.org/data/2.5/forecast`, {
-                        params: {
-                            q: city,
-                            appid: process.env.WEATHER_API_KEY,
-                            lang: 'it',
-                            units: 'metric'
-                        }
-                    });
-
-                    //const today = new Date();
-                    //const tomorrow = new Date(today);
-                    const today = new Date();
-                    const targetDate = today.toISOString().split('T')[0];
-
-                    // Filtra previsioni per oggi
-                    const forecasts = res.data.list.filter(f => f.dt_txt.startsWith(targetDate));
-                    if (forecasts.length === 0) continue;
-
-                    // Prendi la previsione centrale del giorno
-                    const forecast = forecasts[Math.floor(forecasts.length / 2)];
-
-                    const icon = forecast.weather[0].main.toLowerCase();
-                    const emoji = emojiMap[icon] || '🌈';
-
-                    const msg = `📅 Previsioni per oggi a ${city}\n${emoji} ${forecast.weather[0].description}, temperatura media prevista: ${forecast.main.temp.toFixed(1)}°C`;
-
-                    await bot.telegram.sendMessage(iduser, msg);
-
-                } catch (err) {
-                    console.error(`Errore meteo per ${city}:`, err.response?.data || err.message);
-                }
+                let message = `📍 Previsioni meteo per oggi a *${city}*\n`;
+                message = forecast(city, message);
+                await bot.telegram.sendMessage(iduser, msg);
 
             }
 

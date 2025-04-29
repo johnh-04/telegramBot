@@ -1,5 +1,4 @@
 -funzione generica che controlli se risposta è un numero (no ripetizioni)
--funzione del meteo da usare in /weather e in cronjob per fare singola chiamata del meteo (no ripetizioni) -> variabile meteo per il giorno desiderato*
 -cambia text con echo (decidi)
 -scelta di ricevere notifica ("/notify on - off") / scelta di ricevere aggiornamenti su nuove funzionalità (crea template simil helpMessage)
 -controllare e stampare in console operazioni che utenti fanno sul bot (leggere messaggi e mittenti che parlano con bot, per ogni funzione fai una stampa dell'operazione in console con contenuto messaggio e username. ogni log: mittente + operazione)
@@ -13,13 +12,13 @@
 -runnare in locale senza intaccare il cloud -> risolvi conflitto tra avvio in produzione (railway) e sviluppo (localhost) [collega db railway a bot locale]
 -formatta "TESTO" e altri in corsivo da helpMessage e comandi
 -tasso cambio eur/usd automatico
+-emoji luna se è sereno ed è sera (anche con nuvole)
 -implementa i comandi con reply/once -> per potere scrivere sia in singola riga cmd e ctx che poter scrivere ctx dopo aver inviato cmd
 -risolvere il crush che si crea quando dice che è online (spam e crush) -> invia la notifica solo a me per il momento
 -gestire chiusura di mysql per inattività (timeout)
 https://chatgpt.com/share/680f91a1-63c8-8010-8173-2468f6bda01d
 
 *meteo giorno dopo a richiesta ("/tmrweather")
-meteo giornaliero che dice tutte le ore e non solo centrale [vento (direzione e valore) e umidità]
 
 esp32 con confronto dati, AI, SATELLITI, ASTRONOMIA, QUANTUM
 https://chatgpt.com/share/680f84da-e04c-8010-9404-ba58effae6ad

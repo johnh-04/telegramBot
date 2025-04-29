@@ -90,7 +90,7 @@ bot.command('weather', async ctx => {
         return ctx.reply('Devi inserire una città valida! (/weather CITTÀ)');
 
     let message = `📍 Il meteo a *${city}* è \n`;
-    message = forecast(city, message);
+    message = await forecast(city, message);
     ctx.reply(`${message}`);
 
 });
@@ -189,7 +189,7 @@ const job = new CronJob(
 
                 let message = `📍 Previsioni meteo per oggi a *${city}*\n`;
                 message = forecast(city, message);
-                await bot.telegram.sendMessage(iduser, msg);
+                await bot.telegram.sendMessage(iduser, message);
 
             }
 

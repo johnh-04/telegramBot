@@ -186,8 +186,8 @@ const job = new CronJob(
 
             //for (const { iduser, city } of rows) {
                 
-                city = 'Mola di Bari';
-                iduser = 634992918; //solo per test
+                const city = 'Mola di Bari';
+                const iduser = 634992918; //solo per test
 
                 const message = await forecast(city, 'daily');
                 await bot.telegram.sendMessage(iduser, message); //{ parse_mode: 'Markdown' }

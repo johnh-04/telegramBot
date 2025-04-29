@@ -162,7 +162,7 @@ bot.command('unsetcity', ctx => {
 const mysql2 = require('mysql2/promise');
 const forecast = require('./components/forecast.js');
 const job = new CronJob(
-    '25 21 * * *', // ogni giorno alle 6:00
+    '42 21 * * *', // ogni giorno alle 6:00
     async () => {
 
         console.log('Inizio invio previsioni giornaliere...');
@@ -199,6 +199,7 @@ const job = new CronJob(
         } catch (error) {
             console.error('Errore generale durante l’invio previsioni:', error.message);
         }
+
     },
     null,
     true, // Avvia subito il job

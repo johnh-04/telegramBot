@@ -30,8 +30,8 @@ async function forecast(city, mode) {
             }
         });
 
-        const now = new Date();
-        const todayStr = now.toISOString().split('T')[0];
+        const now = new Date(now.toLocaleString("en-US", { timeZone: "Europe/Rome" }));
+        const todayStr = nowInRome.toISOString().split('T')[0];
 
         if (mode === 'now') {
 
@@ -51,7 +51,7 @@ async function forecast(city, mode) {
             const humidityNow = current.main.humidity;
             const windNow = current.wind.speed.toFixed(1);
             const windDirNow = getWindDirection(current.wind.deg);
-            const hourNow = now.toTimeString().slice(0, 5);
+            const hourNow = now.toTimeString().slice(0, 5) + 2;
             const hourNowInt = now.getHours();
 
             let message = `📍 Meteo attuale a ${city}:\n\n🕒 ${hourNow} ${emojiNow} ${currentWeather.description}, 🌡️ ${tempNow}°C, 💨 ${windNow} m/s da ${windDirNow}, 💧 ${humidityNow}%\n`;
@@ -59,7 +59,7 @@ async function forecast(city, mode) {
             const filtered = forecastRes.data.list.filter(f => {
                 const [date, time] = f.dt_txt.split(' ');
                 const hour = parseInt(time.split(':')[0]);
-                return date === todayStr && hour > hourNowInt && hour <= 22 && hour % 2 === 0;
+                return date === todayStr && hour > hourNowInt && hour <= 22 && hour % 2 === 0; //previsioni di orari pari dal momento in cui si chiede fino alle 22
             });
 
             if (filtered.length > 0) {

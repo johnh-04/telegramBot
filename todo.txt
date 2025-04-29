@@ -16,7 +16,8 @@
 -implementa i comandi con reply/once -> per potere scrivere sia in singola riga cmd e ctx che poter scrivere ctx dopo aver inviato cmd
 -risolvere il crush che si crea quando dice che è online (spam e crush) -> invia la notifica solo a me per il momento
 -capire perché invia 3 "ehi sono online"
--formatta i testi
+-formatta i testi (parse markdown)
+-da ora locale con il +2 metti orario europeo automatico
 -funzione weather inserita la città ti dà attuale + previsioni dall'orario più vicino es: 13 -> 13 + 14 + 16 + 18...
 
 -gestire chiusura di mysql per inattività (timeout)

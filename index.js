@@ -89,8 +89,7 @@ bot.command('weather', async ctx => {
     if (!city)
         return ctx.reply('Devi inserire una città valida! (/weather CITTÀ)');
 
-    let message = `📍 Il meteo a *${city}* è \n`;
-    message = await forecast(city, message);
+    const message = await forecast(city, 'now');
     ctx.reply(`${message}`);
 
 });
@@ -163,7 +162,7 @@ bot.command('unsetcity', ctx => {
 const mysql2 = require('mysql2/promise');
 const forecast = require('./components/forecast.js');
 const job = new CronJob(
-    '32 12 * * *', // ogni giorno alle 6:00
+    '25 21 * * *', // ogni giorno alle 6:00
     async () => {
 
         console.log('Inizio invio previsioni giornaliere...');
@@ -185,13 +184,15 @@ const job = new CronJob(
                 return;
             }
 
-            for (const { iduser, city } of rows) {
+            //for (const { iduser, city } of rows) {
+                
+                city = 'Mola di Bari';
+                iduser = 634992918; //solo per test
 
-                let message = `📍 Previsioni meteo per oggi a *${city}*\n`;
-                message = await forecast(city, message);
-                await bot.telegram.sendMessage(iduser, message);
+                const message = await forecast(city, 'daily');
+                await bot.telegram.sendMessage(iduser, message); //{ parse_mode: 'Markdown' }
 
-            }
+            //}
 
             console.log('Meteo giornaliero inviato.');
 

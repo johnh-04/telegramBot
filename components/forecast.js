@@ -56,10 +56,11 @@ async function forecast(city, mode) {
 
             let message = `📍 Meteo attuale a ${city}:\n\n🕒 ${hourNow} ${emojiNow} ${currentWeather.description}, 🌡️ ${tempNow}°C, 💨 ${windNow} m/s da ${windDirNow}, 💧 ${humidityNow}%\n`;
 
+            // api restituisce le previsioni ogni 3 ore, quindi filtriamo per ora
             const filtered = forecastRes.data.list.filter(f => {
                 const [date, time] = f.dt_txt.split(' ');
                 const hour = parseInt(time.split(':')[0]);
-                return date === todayStr && hour > hourNowInt && hour <= 22 && hour % 2 === 0; //previsioni di orari pari dal momento in cui si chiede fino alle 22
+                return date === todayStr && hour > hourNowInt && hour <= 21;
             });
 
             if (filtered.length > 0) {
@@ -89,7 +90,8 @@ async function forecast(city, mode) {
 
         if (mode === 'daily') {
 
-            const targetHours = ['06', '08', '10', '12', '14', '16', '18', '20', '23']; //!!!!
+            // filtriamo le previsioni per oggi (solo le ore 6, 9, 12, 15, 18, 21)
+            const targetHours = ['06', '09', '12', '15', '18', '21'];
             const filtered = forecastRes.data.list.filter(f => {
                 const [date, time] = f.dt_txt.split(' ');
                 const hour = time.split(':')[0];

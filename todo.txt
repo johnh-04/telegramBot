@@ -21,7 +21,7 @@
 -gestire chiusura di mysql per inattività (timeout)
 https://chatgpt.com/share/680f91a1-63c8-8010-8173-2468f6bda01d
 
-*meteo giorno dopo a richiesta ("/tmrweather")
+*meteo giorno dopo a richiesta ("/tmrweather") nella funzione con mode 'tomorrow'
 
 esp32 con confronto dati, AI, SATELLITI, ASTRONOMIA, QUANTUM
 https://chatgpt.com/share/680f84da-e04c-8010-9404-ba58effae6ad

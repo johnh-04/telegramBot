@@ -15,6 +15,8 @@
 -emoji luna se è sereno ed è sera (anche con nuvole)
 -implementa i comandi con reply/once -> per potere scrivere sia in singola riga cmd e ctx che poter scrivere ctx dopo aver inviato cmd
 -risolvere il crush che si crea quando dice che è online (spam e crush) -> invia la notifica solo a me per il momento
+-capire perché invia 3 "ehi sono online"
+
 -gestire chiusura di mysql per inattività (timeout)
 https://chatgpt.com/share/680f91a1-63c8-8010-8173-2468f6bda01d
 

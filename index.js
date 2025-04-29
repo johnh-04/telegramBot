@@ -163,7 +163,7 @@ bot.command('unsetcity', ctx => {
 const mysql2 = require('mysql2/promise');
 const forecast = require('./components/forecast.js');
 const job = new CronJob(
-    '28 12 * * *', // ogni giorno alle 6:00
+    '32 12 * * *', // ogni giorno alle 6:00
     async () => {
 
         console.log('Inizio invio previsioni giornaliere...');
@@ -188,7 +188,7 @@ const job = new CronJob(
             for (const { iduser, city } of rows) {
 
                 let message = `📍 Previsioni meteo per oggi a *${city}*\n`;
-                message = forecast(city, message);
+                message = await forecast(city, message);
                 await bot.telegram.sendMessage(iduser, message);
 
             }

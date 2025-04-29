@@ -31,7 +31,7 @@ async function forecast(city, mode) {
         });
 
         const now = new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/Rome" }));
-        const todayStr = nowInRome.toISOString().split('T')[0];
+        const todayStr = now.toISOString().split('T')[0];
 
         if (mode === 'now') {
 

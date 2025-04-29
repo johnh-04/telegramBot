@@ -30,6 +30,7 @@ async function forecast(city, mode) {
             }
         });
 
+        now = new Date();
         const now = new Date(now.toLocaleString("en-US", { timeZone: "Europe/Rome" }));
         const todayStr = nowInRome.toISOString().split('T')[0];
 
@@ -121,7 +122,7 @@ async function forecast(city, mode) {
         return '⚠️ Modalità meteo non riconosciuta.';
 
     } catch (err) {
-        return `⚠️ Errore durante il recupero del meteo per *${city}*.`;
+        return `⚠️ Errore durante il recupero del meteo per ${city}.`;
     }
 
 }

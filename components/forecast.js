@@ -51,7 +51,7 @@ async function forecast(city, mode) {
             const humidityNow = current.main.humidity;
             const windNow = current.wind.speed.toFixed(1);
             const windDirNow = getWindDirection(current.wind.deg);
-            const hourNow = now.toTimeString().slice(0, 5) + 2;
+            const hourNow = now.toTimeString().slice(0, 5);
             const hourNowInt = now.getHours();
 
             let message = `📍 Meteo attuale a ${city}:\n\n🕒 ${hourNow} ${emojiNow} ${currentWeather.description}, 🌡️ ${tempNow}°C, 💨 ${windNow} m/s da ${windDirNow}, 💧 ${humidityNow}%\n`;
@@ -89,7 +89,7 @@ async function forecast(city, mode) {
 
         if (mode === 'daily') {
 
-            const targetHours = ['06', '08', '10', '12', '14', '16', '18', '20', '22'];
+            const targetHours = ['06', '08', '10', '12', '14', '16', '18', '20', '23']; //!!!!
             const filtered = forecastRes.data.list.filter(f => {
                 const [date, time] = f.dt_txt.split(' ');
                 const hour = time.split(':')[0];

@@ -100,7 +100,42 @@ async function forecast(city, mode) {
 
             if (filtered.length === 0) return `⚠️ Nessuna previsione trovata per ${city}.`;
 
-            let message = `📍 Previsioni meteo per oggi a ${city}\n`;
+            let message = `📍 Previsioni meteo per oggi a ${city}:\n`;
+
+            for (const f of filtered) {
+
+                const hour = f.dt_txt.split(' ')[1].slice(0, 5);
+                const weatherMain = f.weather[0].main.toLowerCase();
+                const emoji = emojiMap[weatherMain] || '🌈';
+                const description = f.weather[0].description;
+                const temp = f.main.temp.toFixed(1);
+                const humidity = f.main.humidity;
+                const windSpeed = f.wind.speed.toFixed(1);
+                const windDir = getWindDirection(f.wind.deg);
+
+                message += `\n🕒 ${hour} ${emoji} ${description}, 🌡️ ${temp}°C, 💨 ${windSpeed} m/s da ${windDir}, 💧 ${humidity}%`;
+
+            }
+
+            return message;
+
+        }
+
+        if (mode === 'tomorrow') {
+
+            // Giorno successivo
+            const tomorrow = new Date(now);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const tomorrowStr = tomorrow.toISOString().split('T')[0];
+
+            const filtered = forecastRes.data.list.filter(f => {
+                const [date, _] = f.dt_txt.split(' ');
+                return date === tomorrowStr;
+            });
+
+            if (filtered.length === 0) return `⚠️ Nessuna previsione trovata per ${city}.`;
+
+            let message = `📍 Previsioni meteo per domani a ${city}:\n`;
 
             for (const f of filtered) {
 

@@ -13,7 +13,10 @@ Converto da *Dollari* a *Euro*.
 Invio un messaggio ripetuto più volte (massimo 10).
 
 🌤️ /weather CITTÀ
-Ti dico il meteo attuale nella città indicata.
+Ti mostro il meteo attuale nella città indicata.
+
+📅 /tomorrow CITTÀ  
+Ti mostro le previsioni per la giornata di domani nella città indicata.
 
 🏙️ /setcity CITTÀ
 Imposta la tua città preferita per ricevere ogni mattina il meteo giornaliero.

@@ -25,7 +25,8 @@ bot.telegram.setMyCommands([
     { command: 'eur', description: 'Converte € in $' },
     { command: 'usd', description: 'Converte $ in €' },
     { command: 'spam', description: 'Spam testuale' },
-    { command: 'weather', description: 'Meteo attuale' },
+    { command: 'weather', description: 'Meteo attuale nella città indicata' },
+    { command: 'tomorrow', description: 'Previsioni per domani nella città indicata' },
     { command: 'setcity', description: 'Imposta città preferita per il meteo giornaliero' },
     { command: 'unsetcity', description: 'Rimuovi città preferita per il meteo giornaliero' },
     { command: 'google', description: 'Ricerca su Google' },
@@ -90,6 +91,19 @@ bot.command('weather', async ctx => {
         return ctx.reply('Devi inserire una città valida! (/weather CITTÀ)');
 
     const message = await forecast(city, 'now');
+    ctx.reply(`${message}`);
+
+});
+
+bot.command('tomorrow', async ctx => {
+
+    const args = ctx.message.text.split(' ');
+    const city = args.slice(1).join(' ');
+
+    if (!city)
+        return ctx.reply('Devi inserire una città valida! (/tomorrow CITTÀ)');
+
+    const message = await forecast(city, 'tomorrow');
     ctx.reply(`${message}`);
 
 });
@@ -185,7 +199,7 @@ const job = new CronJob(
             }
 
             for (const { iduser, city } of rows) {
-                
+
                 //const city = 'Mola di Bari';
                 //const iduser = 634992918; //solo per test
 

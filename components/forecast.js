@@ -54,7 +54,7 @@ async function forecast(city, mode) {
             const hourNow = now.toTimeString().slice(0, 5);
             const hourNowInt = now.getHours();
 
-            let message = `📍 Meteo attuale a ${city}:\n\n🕒 ${hourNow} ${emojiNow} ${currentWeather.description}, 🌡️ ${tempNow}°C, 💨 ${windNow} m/s da ${windDirNow}, 💧 ${humidityNow}%\n`;
+            let message = `📍 Meteo attuale a *${city}*:\n\n🕒 *${hourNow}* ${emojiNow} ${currentWeather.description}, 🌡️ ${tempNow}°C, 💨 ${windNow} m/s da ${windDirNow}, 💧 ${humidityNow}%\n`;
 
             // api restituisce le previsioni ogni 3 ore, quindi filtriamo per ora
             const filtered = forecastRes.data.list.filter(f => {
@@ -100,7 +100,7 @@ async function forecast(city, mode) {
 
             if (filtered.length === 0) return `⚠️ Nessuna previsione trovata per ${city}.`;
 
-            let message = `📍 Previsioni meteo per oggi a ${city}:\n`;
+            let message = `📍 Previsioni meteo per oggi a *${city}*:\n`;
 
             for (const f of filtered) {
 
@@ -135,7 +135,7 @@ async function forecast(city, mode) {
 
             if (filtered.length === 0) return `⚠️ Nessuna previsione trovata per ${city}.`;
 
-            let message = `📍 Previsioni meteo per domani a ${city}:\n`;
+            let message = `📍 Previsioni meteo per domani a *${city}*:\n`;
 
             for (const f of filtered) {
 

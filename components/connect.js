@@ -36,7 +36,7 @@ module.exports = function (bot) {
 
         console.log(`Utente: ${firstname} - ${username} - ${iduser}`);
 
-        ctx.reply(`Ciao ${firstname}! Usa /help per vedere i comandi disponibili.`);
+        ctx.reply(`Ciao ${firstname}! utilizza /help per visualizzare i comandi disponibili.`);
 
         db.query('SELECT iduser FROM users WHERE iduser = ?', [iduser], (err, rows) => {
 

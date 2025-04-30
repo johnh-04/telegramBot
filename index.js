@@ -34,14 +34,14 @@ bot.telegram.setMyCommands([
 ]);
 
 // Help
-bot.command('help', ctx => ctx.reply(helpMessage));
+bot.command('help', ctx => ctx.reply(helpMessage, { parse_mode: 'Markdown' }));
 
 // Text
 bot.command('text', ctx => {
 
     const args = ctx.message.text.split(' ').slice(1);
     if (args.length === 0)
-        return ctx.reply('Devi inserire un messaggio! (/text TESTO)');
+        return ctx.reply('Devi inserire un messaggio! (/text _TESTO_)');
     ctx.reply(args.join(' '));
 
 });
@@ -51,7 +51,7 @@ bot.command('eur', ctx => {
 
     const value = parseFloat(ctx.message.text.split(' ')[1]);
     if (isNaN(value) || value <= 0)
-        return ctx.reply('Devi inserire un numero valido! (/eur NUMERO)');
+        return ctx.reply('Devi inserire un numero valido! (/eur _NUMERO_)');
     ctx.reply(`${(value * exchangeRate).toFixed(2)} $`);
 
 });
@@ -61,7 +61,7 @@ bot.command('usd', ctx => {
 
     const value = parseFloat(ctx.message.text.split(' ')[1]);
     if (isNaN(value) || value <= 0)
-        return ctx.reply('Devi inserire un numero valido! (/usd NUMERO)');
+        return ctx.reply('Devi inserire un numero valido! (/usd _NUMERO_)');
     ctx.reply(`${(value / exchangeRate).toFixed(2)} €`);
 
 });
@@ -72,7 +72,7 @@ bot.command('spam', ctx => {
     let count = parseInt(ctx.message.text.split(' ')[1]);
 
     if (isNaN(count) || count <= 0)
-        return ctx.reply('Devi inserire un numero valido <=10! (/spam NUMERO)');
+        return ctx.reply('Devi inserire un numero valido <=10! (/spam _NUMERO_)');
 
     if (count > 10) count = 10;
 
@@ -88,10 +88,10 @@ bot.command('weather', async ctx => {
     const city = args.slice(1).join(' ');
 
     if (!city)
-        return ctx.reply('Devi inserire una città valida! (/weather CITTÀ)');
+        return ctx.reply('Devi inserire una città valida! (/weather _CITTÀ_)');
 
     const message = await forecast(city, 'now');
-    ctx.reply(`*${message}*`, { parse_mode: 'Markdown' });
+    ctx.reply(`${message}`, { parse_mode: 'Markdown' });
 
 });
 
@@ -101,10 +101,10 @@ bot.command('tomorrow', async ctx => {
     const city = args.slice(1).join(' ');
 
     if (!city)
-        return ctx.reply('Devi inserire una città valida! (/tomorrow CITTÀ)');
+        return ctx.reply('Devi inserire una città valida! (/tomorrow _CITTÀ_)');
 
     const message = await forecast(city, 'tomorrow');
-    ctx.reply(`${message}`);
+    ctx.reply(`${message}`, { parse_mode: 'Markdown' });
 
 });
 
@@ -118,7 +118,7 @@ bot.command('setcity', async ctx => {
     const city = args.slice(1).join(' ');
 
     if (!city)
-        return ctx.reply('Devi inserire una città valida! (/setcity CITTÀ)');
+        return ctx.reply('Devi inserire una città valida! (/setcity _CITTÀ_)');
 
     try {
 
@@ -138,13 +138,13 @@ bot.command('setcity', async ctx => {
 
         db.query('UPDATE users SET city = ? WHERE iduser = ?', [city, iduser], err => {
             if (err) return ctx.reply('❌ Errore nel salvataggio. Riprova.');
-            ctx.reply(`✅ Perfetto! Riceverai ogni mattina il meteo giornaliero di ${city}.`);
+            ctx.reply(`✅ Perfetto! Riceverai ogni mattina il meteo giornaliero di *${city}*.`, { parse_mode: 'Markdown' });
         });
 
     } catch (err) {
 
         if (err.response && err.response.status === 404)
-            ctx.reply(`❌ Città "${city}" non trovata. Prova a controllare l'ortografia.`);
+            ctx.reply(`❌ Città "*${city}*" non trovata. Prova a controllare l'ortografia.`, { parse_mode: 'Markdown' });
         else
             ctx.reply('⚠️ Errore. Riprova più tardi.');
 
@@ -204,7 +204,7 @@ const job = new CronJob(
                 //const iduser = 634992918; //solo per test
 
                 const message = await forecast(city, 'daily');
-                await bot.telegram.sendMessage(iduser, message); //{ parse_mode: 'Markdown' }
+                await bot.telegram.sendMessage(iduser, message, { parse_mode: 'Markdown' });
 
             }
 

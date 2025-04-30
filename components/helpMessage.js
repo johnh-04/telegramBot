@@ -1,30 +1,30 @@
 const helpMessage = `🤖 Ecco cosa posso fare per te:
 
-📝 /text TESTO
+📝 /text _TESTO_
 Ti restituisco il messaggio che hai scritto.
 
-💱 /eur NUMERO
+💱 /eur _NUMERO_
 Converto da *Euro* a *Dollari*.
 
-💵 /usd NUMERO
+💵 /usd _NUMERO_
 Converto da *Dollari* a *Euro*.
 
-📨 /spam NUMERO
+📨 /spam _NUMERO_
 Invio un messaggio ripetuto più volte (massimo 10).
 
-🌤️ /weather CITTÀ
+🌤️ /weather _CITTÀ_
 Ti mostro il meteo attuale nella città indicata.
 
-📅 /tomorrow CITTÀ  
+📅 /tomorrow _CITTÀ_  
 Ti mostro le previsioni per la giornata di domani nella città indicata.
 
-🏙️ /setcity CITTÀ
+🏙️ /setcity _CITTÀ_
 Imposta la tua città preferita per ricevere ogni mattina il meteo giornaliero.
 
 🏙️ /unsetcity
 Rimuovi la tua città preferita per il meteo giornaliero.
 
-🔍 /google RICERCA
+🔍 /google _RICERCA_
 Eseguo una ricerca su Google con le parole fornite.
 
 ℹ️ /help

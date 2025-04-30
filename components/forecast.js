@@ -133,7 +133,7 @@ async function forecast(city, mode) {
                 return date === tomorrowStr;
             });
 
-            if (filtered.length === 0) return `⚠️ Nessuna previsione trovata per ${city}.`;
+            if (filtered.length === 0) return `⚠️ Nessuna previsione trovata per *${city}*.`;
 
             let message = `📍 Previsioni meteo per domani a *${city}*:\n`;
 
@@ -158,7 +158,7 @@ async function forecast(city, mode) {
         return '⚠️ Modalità meteo non riconosciuta.';
 
     } catch (err) {
-        return `⚠️ Errore durante il recupero del meteo per ${city}.`;
+        return `⚠️ Errore durante il recupero del meteo per *${city}*.`;
     }
 
 }

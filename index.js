@@ -41,7 +41,7 @@ bot.command('text', ctx => {
 
     const args = ctx.message.text.split(' ').slice(1);
     if (args.length === 0)
-        return ctx.reply('Devi inserire un messaggio! (/text _TESTO_)');
+        return ctx.reply('Devi inserire un messaggio! (/text _TESTO_)', { parse_mode: 'Markdown' });
     ctx.reply(args.join(' '));
 
 });
@@ -51,7 +51,7 @@ bot.command('eur', ctx => {
 
     const value = parseFloat(ctx.message.text.split(' ')[1]);
     if (isNaN(value) || value <= 0)
-        return ctx.reply('Devi inserire un numero valido! (/eur _NUMERO_)');
+        return ctx.reply('Devi inserire un numero valido! (/eur _NUMERO_)', { parse_mode: 'Markdown' });
     ctx.reply(`${(value * exchangeRate).toFixed(2)} $`);
 
 });
@@ -61,7 +61,7 @@ bot.command('usd', ctx => {
 
     const value = parseFloat(ctx.message.text.split(' ')[1]);
     if (isNaN(value) || value <= 0)
-        return ctx.reply('Devi inserire un numero valido! (/usd _NUMERO_)');
+        return ctx.reply('Devi inserire un numero valido! (/usd _NUMERO_)', { parse_mode: 'Markdown' });
     ctx.reply(`${(value / exchangeRate).toFixed(2)} €`);
 
 });
@@ -72,7 +72,7 @@ bot.command('spam', ctx => {
     let count = parseInt(ctx.message.text.split(' ')[1]);
 
     if (isNaN(count) || count <= 0)
-        return ctx.reply('Devi inserire un numero valido <=10! (/spam _NUMERO_)');
+        return ctx.reply('Devi inserire un numero valido <=10! (/spam _NUMERO_)', { parse_mode: 'Markdown' });
 
     if (count > 10) count = 10;
 
@@ -88,7 +88,7 @@ bot.command('weather', async ctx => {
     const city = args.slice(1).join(' ');
 
     if (!city)
-        return ctx.reply('Devi inserire una città valida! (/weather _CITTÀ_)');
+        return ctx.reply('Devi inserire una città valida! (/weather _CITTÀ_)', { parse_mode: 'Markdown' });
 
     const message = await forecast(city, 'now');
     ctx.reply(`${message}`, { parse_mode: 'Markdown' });
@@ -101,7 +101,7 @@ bot.command('tomorrow', async ctx => {
     const city = args.slice(1).join(' ');
 
     if (!city)
-        return ctx.reply('Devi inserire una città valida! (/tomorrow _CITTÀ_)');
+        return ctx.reply('Devi inserire una città valida! (/tomorrow _CITTÀ_)', { parse_mode: 'Markdown' });
 
     const message = await forecast(city, 'tomorrow');
     ctx.reply(`${message}`, { parse_mode: 'Markdown' });
@@ -118,7 +118,7 @@ bot.command('setcity', async ctx => {
     const city = args.slice(1).join(' ');
 
     if (!city)
-        return ctx.reply('Devi inserire una città valida! (/setcity _CITTÀ_)');
+        return ctx.reply('Devi inserire una città valida! (/setcity _CITTÀ_)', { parse_mode: 'Markdown' });
 
     try {
 
@@ -227,7 +227,7 @@ bot.command('google', ctx => {
 
     const args = ctx.message.text.split(' ').slice(1);
     if (args.length === 0)
-        return ctx.reply('Devi inserire una ricerca valida! (/google RICERCA)');
+        return ctx.reply('Devi inserire una ricerca valida! (/google RICERCA)', { parse_mode: 'Markdown' });
     const query = args.join('+');
     ctx.reply(`🔍 https://www.google.com/search?q=${query}`);
 

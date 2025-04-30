@@ -78,7 +78,7 @@ async function forecast(city, mode) {
                     const windSpeed = f.wind.speed.toFixed(1);
                     const windDir = getWindDirection(f.wind.deg);
 
-                    message += `\n🕒 ${hour} ${emoji} ${description}, 🌡️ ${temp}°C, 💨 ${windSpeed} m/s da ${windDir}, 💧 ${humidity}%`;
+                    message += `\n🕒 *${hour}* ${emoji} ${description}, 🌡️ ${temp}°C, 💨 ${windSpeed} m/s da ${windDir}, 💧 ${humidity}%`;
 
                 }
 
@@ -98,7 +98,7 @@ async function forecast(city, mode) {
                 return date === todayStr && targetHours.includes(hour);
             });
 
-            if (filtered.length === 0) return `⚠️ Nessuna previsione trovata per ${city}.`;
+            if (filtered.length === 0) return `⚠️ Nessuna previsione trovata per *${city}*.`;
 
             let message = `📍 Previsioni meteo per oggi a *${city}*:\n`;
 
@@ -113,7 +113,7 @@ async function forecast(city, mode) {
                 const windSpeed = f.wind.speed.toFixed(1);
                 const windDir = getWindDirection(f.wind.deg);
 
-                message += `\n🕒 ${hour} ${emoji} ${description}, 🌡️ ${temp}°C, 💨 ${windSpeed} m/s da ${windDir}, 💧 ${humidity}%`;
+                message += `\n🕒 *${hour}* ${emoji} ${description}, 🌡️ ${temp}°C, 💨 ${windSpeed} m/s da ${windDir}, 💧 ${humidity}%`;
 
             }
 
@@ -148,7 +148,7 @@ async function forecast(city, mode) {
                 const windSpeed = f.wind.speed.toFixed(1);
                 const windDir = getWindDirection(f.wind.deg);
 
-                message += `\n🕒 ${hour} ${emoji} ${description}, 🌡️ ${temp}°C, 💨 ${windSpeed} m/s da ${windDir}, 💧 ${humidity}%`;
+                message += `\n🕒 *${hour}* ${emoji} ${description}, 🌡️ ${temp}°C, 💨 ${windSpeed} m/s da ${windDir}, 💧 ${humidity}%`;
 
             }
 

@@ -91,7 +91,7 @@ bot.command('weather', async ctx => {
         return ctx.reply('Devi inserire una città valida! (/weather CITTÀ)');
 
     const message = await forecast(city, 'now');
-    ctx.reply(`${message}`);
+    ctx.reply(`*${message}*`, { parse_mode: 'Markdown' });
 
 });
 

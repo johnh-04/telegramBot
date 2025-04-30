@@ -10,13 +10,12 @@
 -risoluzione bug in console
 -gestire caso default di comando inesistente
 -runnare in locale senza intaccare il cloud -> risolvi conflitto tra avvio in produzione (railway) e sviluppo (localhost) [collega db railway a bot locale]
--formatta "TESTO" e altri in corsivo da helpMessage e comandi
 -tasso cambio eur/usd automatico
 -emoji luna se è sereno ed è sera (anche con nuvole)
 -implementa i comandi con reply/once -> per potere scrivere sia in singola riga cmd e ctx che poter scrivere ctx dopo aver inviato cmd
 -risolvere il crush che si crea quando dice che è online (spam e crush) -> invia la notifica solo a me per il momento
 -capire perché invia 3 "ehi sono online" (penso sia per i conflitti)
--formatta i testi (parse markdown), formatta informazioni con escape di tab
+-formatta informazioni con escape di tab
 
 -gestire chiusura di mysql per inattività (timeout)
 https://chatgpt.com/share/680f91a1-63c8-8010-8173-2468f6bda01d

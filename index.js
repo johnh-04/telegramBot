@@ -85,7 +85,7 @@ bot.command('spam', ctx => {
 bot.command('weather', async ctx => {
 
     const args = ctx.message.text.split(' ');
-    const city = args.slice(1).join(' ');
+    const city = args.slice(1).join(' ').toUpperCase();;
 
     if (!city)
         return ctx.reply('Devi inserire una città valida! (/weather _CITTÀ_)', { parse_mode: 'Markdown' });
@@ -98,7 +98,7 @@ bot.command('weather', async ctx => {
 bot.command('tomorrow', async ctx => {
 
     const args = ctx.message.text.split(' ');
-    const city = args.slice(1).join(' ');
+    const city = args.slice(1).join(' ').toUpperCase();;
 
     if (!city)
         return ctx.reply('Devi inserire una città valida! (/tomorrow _CITTÀ_)', { parse_mode: 'Markdown' });
@@ -115,7 +115,7 @@ bot.command('setcity', async ctx => {
     //bot.once
 
     const args = ctx.message.text.split(' ');
-    const city = args.slice(1).join(' ');
+    const city = args.slice(1).join(' ').toUpperCase();;
 
     if (!city)
         return ctx.reply('Devi inserire una città valida! (/setcity _CITTÀ_)', { parse_mode: 'Markdown' });

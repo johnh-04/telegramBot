@@ -2,6 +2,7 @@ require('dotenv').config();
 const mysql = require('mysql2');
 const axios = require('axios');
 const helpMessage = require('./helpMessage');
+const ADMIN_ID = parseInt(process.env.ADMIN_ID);
 
 module.exports = function (bot) {
 
@@ -26,7 +27,7 @@ module.exports = function (bot) {
             //axios.get(`https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage?chat_id=${chatId}&text=${onlineMsg}`);
         });
     });*/
-    axios.get(`https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage?chat_id=${634992918}&text=${onlineMsg}`); //notifico solo me stesso per evitare spam
+    axios.get(`https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage?chat_id=${ADMIN_ID}&text=${onlineMsg}`); //notifico solo me stesso per evitare spam
 
     bot.start(ctx => {
 

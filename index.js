@@ -137,7 +137,8 @@ bot.command('setcity', async ctx => {
         const iduser = ctx.from.id;
 
         db.query('UPDATE users SET city = ? WHERE iduser = ?', [city, iduser], err => {
-            if (err) return ctx.reply('❌ Errore nel salvataggio. Riprova.');
+            if (err) 
+                return ctx.reply('❌ Errore nel salvataggio. Riprova.');
             ctx.reply(`✅ Perfetto! Riceverai ogni mattina il meteo giornaliero di *${city}*.`, { parse_mode: 'Markdown' });
         });
 
@@ -160,7 +161,8 @@ bot.command('unsetcity', ctx => {
         const iduser = ctx.from.id;
 
         db.query('UPDATE users SET city = ? WHERE iduser = ?', ["", iduser], err => {
-            if (err) return ctx.reply('❌ Errore nel salvataggio. Riprova.');
+            if (err) 
+                return ctx.reply('❌ Errore nel salvataggio. Riprova.');
             ctx.reply(`✅ Città rimossa con successo! Non riceverai più il meteo giornaliero.`);
         });
 
@@ -230,6 +232,81 @@ bot.command('google', ctx => {
         return ctx.reply('Devi inserire una ricerca valida! (/google RICERCA)', { parse_mode: 'Markdown' });
     const query = args.join('+');
     ctx.reply(`🔍 https://www.google.com/search?q=${query}`);
+
+});
+
+const ADMIN_ID = parseInt(process.env.ADMIN_ID);
+
+// Broadcast (solo admin)
+let isBroadcasting = false;
+console.log('Broadcasting:', isBroadcasting);
+
+bot.command('broadcast', ctx => {
+
+    if (ctx.from.id !== ADMIN_ID)
+        return ctx.reply('❌ Non hai i permessi per usare questo comando.');
+
+    if (isBroadcasting)
+        return ctx.reply('⚠️ Sei già in modalità broadcast.\nScrivi il messaggio o usa /cancel per annullare.');
+
+    isBroadcasting = true;
+    console.log('Broadcasting:', isBroadcasting);
+
+    ctx.reply('✉️ *Modalità broadcast attivata.*\nScrivi ora il messaggio da inviare a tutti gli utenti.\n\n❌ Usa /cancel per annullare.', { parse_mode: 'Markdown' });
+
+});
+
+bot.command('cancel', ctx => {
+
+    if (ctx.from.id !== ADMIN_ID)
+        return;
+
+    if (isBroadcasting) {
+
+        isBroadcasting = false;
+        console.log('Broadcasting:', isBroadcasting);
+        ctx.reply('❌ Broadcast annullato.');
+
+    } else
+        ctx.reply('ℹ️ Non sei in modalità broadcast.');
+
+});
+
+bot.on('message', async ctx => {
+
+    const msg = ctx.message;
+
+    // Se non sei l’admin, o non è in modalità broadcast, o è un comando, esci
+    if (!isBroadcasting || ctx.from.id !== ADMIN_ID || !msg.text || msg.text.startsWith('/'))
+        return;
+
+    const messageToSend = msg.text;
+    isBroadcasting = false; // Disattiva subito la modalità broadcast
+    console.log('Broadcasting:', isBroadcasting);
+
+    try {
+
+        const [rows] = await db.promise().query('SELECT iduser FROM users');
+
+        for (const { iduser } of rows) {
+
+            //if (iduser === ADMIN_ID) continue; // Salta l'admin
+            try {
+                await bot.telegram.sendMessage(iduser, messageToSend);
+            } catch (err) {
+                console.error(`Errore nell'invio a ${iduser}:`, err.message);
+            }
+
+        }
+
+        ctx.reply('✅ Messaggio inviato a tutti gli utenti.');
+
+    } catch (err) {
+
+        ctx.reply('⚠️ Errore durante il broadcast.');
+        console.error('Errore broadcast:', err.message);
+
+    }
 
 });
 

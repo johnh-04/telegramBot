@@ -130,10 +130,22 @@ bot.command('setcity', async ctx => {
 
         const iduser = ctx.from.id;
 
-        db.query('UPDATE users SET city = ? WHERE iduser = ?', [city, iduser], err => {
-            if (err) 
-                return ctx.reply('❌ Errore nel salvataggio. Riprova.');
-            ctx.reply(`✅ Perfetto! Riceverai ogni mattina il meteo giornaliero di *${city}*.`, { parse_mode: 'Markdown' });
+        db.query('SELECT iduser FROM users WHERE iduser = ?', [iduser], (err, rows) => {
+            
+            if (err)
+                return console.error(err);
+            
+            if (rows.length !== 0) {
+
+                db.query('UPDATE users SET city = ? WHERE iduser = ?', [city, iduser], err => {
+                    if (err) 
+                        return ctx.reply('❌ Errore nel salvataggio. Riprova.');
+                    ctx.reply(`✅ Perfetto! Riceverai ogni mattina il meteo giornaliero di *${city}*.`, { parse_mode: 'Markdown' });
+                });
+
+            } else
+                ctx.reply(`❌ Non sei registrato! Utilizza /start per registrarti.`);
+
         });
 
     } catch (err) {
@@ -154,13 +166,25 @@ bot.command('unsetcity', ctx => {
 
         const iduser = ctx.from.id;
 
-        db.query('UPDATE users SET city = ? WHERE iduser = ?', ["", iduser], err => {
-            if (err) 
-                return ctx.reply('❌ Errore nel salvataggio. Riprova.');
-            ctx.reply(`✅ Città rimossa con successo! Non riceverai più il meteo giornaliero.`);
-        });
+        db.query('SELECT iduser FROM users WHERE iduser = ?', [iduser], (err, rows) => {
+            
+            if (err)
+                return console.error(err);
+            
+            if (rows.length !== 0) {
 
-        console.log('Città rimossa con successo.');
+                db.query('UPDATE users SET city = ? WHERE iduser = ?', ["", iduser], err => {
+                    if (err) 
+                        return ctx.reply('❌ Errore nel salvataggio. Riprova.');
+                    ctx.reply(`✅ Città rimossa con successo! Non riceverai più il meteo giornaliero.`);
+                });
+
+                console.log('Città rimossa con successo.');
+
+            } else
+                ctx.reply(`❌ Non sei registrato! Utilizza /start per registrarti.`);
+        
+        });
 
     } catch (err) {
         ctx.reply('⚠️ Errore. Riprova più tardi.');

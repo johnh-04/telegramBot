@@ -72,7 +72,7 @@ async function forecast(city, mode) {
             const current = currentRes.data;
             const currentWeather = current.weather[0];
             //const emojiNow = emojiMap[currentWeather.main.toLowerCase()] || '🌈';
-            const emojiNow = getWeatherIcon(currentWeather.description, now.getHours());
+            const emojiNow = getWeatherIcon(currentWeather.main.toLowerCase(), now.getHours());
             const tempNow = current.main.temp.toFixed(1);
             const humidityNow = current.main.humidity;
             const windNow = current.wind.speed.toFixed(1);
@@ -98,7 +98,7 @@ async function forecast(city, mode) {
                     const hour = f.dt_txt.split(' ')[1].slice(0, 5);
                     const weatherMain = f.weather[0].main.toLowerCase();
                     //const emoji = emojiMap[weatherMain] || '🌈';
-                    const emoji = getWeatherIcon(f.weather[0].description, hour.split(':')[0]);
+                    const emoji = getWeatherIcon(weatherMain, hour.split(':')[0]);
                     const description = f.weather[0].description;
                     const temp = f.main.temp.toFixed(1);
                     const humidity = f.main.humidity;
@@ -134,7 +134,7 @@ async function forecast(city, mode) {
                 const hour = f.dt_txt.split(' ')[1].slice(0, 5);
                 const weatherMain = f.weather[0].main.toLowerCase();
                 //const emoji = emojiMap[weatherMain] || '🌈';
-                const emoji = getWeatherIcon(f.weather[0].description, hour.split(':')[0]);
+                const emoji = getWeatherIcon(weatherMain, hour.split(':')[0]);
                 const description = f.weather[0].description;
                 const temp = f.main.temp.toFixed(1);
                 const humidity = f.main.humidity;
@@ -170,7 +170,7 @@ async function forecast(city, mode) {
                 const hour = f.dt_txt.split(' ')[1].slice(0, 5);
                 const weatherMain = f.weather[0].main.toLowerCase();
                 //const emoji = emojiMap[weatherMain] || '🌈';
-                const emoji = getWeatherIcon(f.weather[0].description, hour.split(':')[0]);
+                const emoji = getWeatherIcon(weatherMain, hour.split(':')[0]);
                 const description = f.weather[0].description;
                 const temp = f.main.temp.toFixed(1);
                 const humidity = f.main.humidity;

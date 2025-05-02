@@ -13,7 +13,8 @@ const axios = require('axios');
 
 function getWeatherIcon(condition, hour) {
 
-    const isNight = hour >= 21 || hour < 6; // notte: 21-05 inclusi
+    const hourInt = parseInt(hour);
+    const isNight = hourInt >= 21 || hourInt < 6; // notte: 21-05 inclusi
   
     condition = condition.toLowerCase();
   

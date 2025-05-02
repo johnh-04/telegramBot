@@ -5,17 +5,11 @@ const cron = require('node-cron');
 const { CronJob } = require('cron');
 const mysql = require('mysql2');
 const helpMessage = require('./components/helpMessage.js');
+const db = require('./components/db.js');
 
 console.log('BOT_TOKEN:', process.env.BOT_TOKEN?.slice(0, 10));
 const bot = new Telegraf(process.env.BOT_TOKEN);
 require('./components/connect.js')(bot);
-
-const db = mysql.createConnection({
-    host: process.env.DB_HOST || 'localhost',
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || '',
-    database: process.env.DB_NAME || 'telegrambot',
-});
 
 const exchangeRate = 1.125; // Esempio di tasso di cambio EUR/USD
 

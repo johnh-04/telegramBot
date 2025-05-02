@@ -3,20 +3,9 @@ const mysql = require('mysql2');
 const axios = require('axios');
 const helpMessage = require('./helpMessage');
 const ADMIN_ID = parseInt(process.env.ADMIN_ID);
+const db = require('./db.js');
 
 module.exports = function (bot) {
-
-    const db = mysql.createConnection({
-        host: process.env.DB_HOST || 'localhost',
-        user: process.env.DB_USER || 'root',
-        password: process.env.DB_PASSWORD || '',
-        database: process.env.DB_NAME || 'telegrambot',
-    });
-
-    db.connect(err => {
-        if (err) throw err;
-        console.log('Connesso a MySQL!');
-    });
 
     // Quando il bot parte, notifica tutti gli utenti -> commentato per evitare spam
     const onlineMsg = '🤖 Ehi, sono online!';
@@ -41,7 +30,8 @@ module.exports = function (bot) {
 
         db.query('SELECT iduser FROM users WHERE iduser = ?', [iduser], (err, rows) => {
 
-            if (err) return console.error(err);
+            if (err)
+                return console.error(err);
 
             if (rows.length === 0) {
                 db.query(

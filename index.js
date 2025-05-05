@@ -113,7 +113,7 @@ bot.command('setcity', async ctx => {
 
     try {
 
-        await axios.get(`https://api.openweathermap.org/data/2.5/weather`, {
+        const res = await axios.get('https://api.openweathermap.org/data/2.5/weather', {
             params: {
                 q: city,
                 appid: process.env.WEATHER_API_KEY,

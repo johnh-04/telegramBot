@@ -283,7 +283,7 @@ bot.on('message', async ctx => {
 
     try {
 
-        const [rows] = await db.promise().query('SELECT iduser FROM users');
+        const [rows] = await db.query('SELECT iduser FROM users');
 
         for (const { iduser } of rows) {
 

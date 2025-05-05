@@ -131,7 +131,8 @@ bot.command('setcity', async ctx => {
 
         await db.query('UPDATE users SET city = ? WHERE iduser = ?', [city, iduser]);
 
-        ctx.reply(`✅ Perfetto! Riceverai ogni sera le previsioni per *${city}*.`, { parse_mode: 'Markdown' });
+        ctx.reply(`✅ Perfetto! Riceverai ogni mattina le previsioni per *${city}*.`, { parse_mode: 'Markdown' });
+        console.log('Città salvata con successo: ', data.name);
 
     } catch (err) {
         if (err.response?.status === 404)
@@ -164,7 +165,7 @@ bot.command('unsetcity', async ctx => {
         console.error(err);
         ctx.reply('⚠️ Errore del server. Riprova più tardi.');
     }
-    
+
 });
 
 // Cronjob alle 6:00 per inviare meteo del giorno

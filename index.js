@@ -122,6 +122,7 @@ bot.command('setcity', async ctx => {
             }
         });
 
+        const data = res.data;
         const iduser = ctx.from.id;
 
         const [rows] = await db.query('SELECT iduser FROM users WHERE iduser = ?', [iduser]);
@@ -135,12 +136,14 @@ bot.command('setcity', async ctx => {
         console.log('Città salvata con successo: ', data.name);
 
     } catch (err) {
+
         if (err.response?.status === 404)
             ctx.reply(`❌ Città "*${city}*" non trovata.`, { parse_mode: 'Markdown' });
         else {
             console.error(err);
             ctx.reply('⚠️ Errore del server. Riprova più tardi.');
         }
+        
     }
 
 });

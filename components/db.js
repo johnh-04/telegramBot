@@ -1,16 +1,23 @@
 const mysql = require('mysql2');
 
-const db = mysql.createConnection({
+// Crea un pool di connessioni con supporto a async/await
+const pool = mysql.createPool({
+    connectionLimit: 10,
     host: process.env.DB_HOST || 'localhost',
     user: process.env.DB_USER || 'root',
     password: process.env.DB_PASSWORD || '',
     database: process.env.DB_NAME || 'telegrambot',
 });
 
-db.connect(err => {
+
+pool.getConnection((err, connection) => {
     if (err)
-        throw err;
-    console.log('Connesso a MySQL!');
+        console.error('Errore di connessione al database:', err);
+    else {
+        console.log('Connesso a MySQL!');
+        connection.release(); // Rilascia la connessione al pool
+    }
 });
 
-module.exports = db;
+// Esporta il pool con supporto async/await
+module.exports = pool.promise();

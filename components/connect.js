@@ -1,5 +1,4 @@
 require('dotenv').config();
-const mysql = require('mysql2');
 const axios = require('axios');
 const helpMessage = require('./helpMessage');
 const ADMIN_ID = parseInt(process.env.ADMIN_ID);
@@ -18,7 +17,7 @@ module.exports = function (bot) {
     });*/
     axios.get(`https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage?chat_id=${ADMIN_ID}&text=${onlineMsg}`); //notifico solo me stesso per evitare spam
 
-    bot.start(ctx => {
+    bot.start(async ctx => {
 
         const firstname = ctx.from.first_name || 'noName';
         const username = ctx.from.username || 'noUsername';
@@ -28,27 +27,29 @@ module.exports = function (bot) {
 
         ctx.reply(`Ciao ${firstname}! utilizza /help per visualizzare i comandi disponibili.`);
 
-        db.query('SELECT iduser FROM users WHERE iduser = ?', [iduser], (err, rows) => {
+        try {
 
-            if (err)
-                return console.error(err);
+            const [rows] = await db.query('SELECT iduser FROM users WHERE iduser = ?', [iduser]);
 
             if (rows.length === 0) {
-                db.query(
+
+                await db.query(
                     'INSERT INTO users (firstname, username, iduser) VALUES (?, ?, ?)',
-                    [firstname, username, iduser],
-                    err => {
-                        if (err) return console.error(err);
-                        console.log('Nuovo utente registrato!');
-                        ctx.reply('🟢 Registrato nel database! Sarai informato quando sarò online.');
-                    }
+                    [firstname, username, iduser]
                 );
+
+                console.log('Nuovo utente registrato!');
+                ctx.reply('🟢 Registrato nel database! Sarai informato quando sarò online.');
+                
             } else {
                 console.log('Utente già registrato!');
                 ctx.reply('🔵 Sei già registrato nel database!');
             }
 
-        });
+        } catch (err) {
+            console.error('Errore con il database:', err);
+            ctx.reply('❌ Errore durante la registrazione nel database.');
+        }
 
     });
 

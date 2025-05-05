@@ -105,18 +105,15 @@ bot.command('tomorrow', async ctx => {
 // Setcity
 bot.command('setcity', async ctx => {
 
-    //ctx.reply('📍 Scrivi il nome della città per cui vuoi ricevere ogni sera le previsioni per il giorno dopo:');
-    //bot.once
-
     const args = ctx.message.text.split(' ');
-    const city = args.slice(1).join(' ').toUpperCase();;
+    const city = args.slice(1).join(' ').toUpperCase();
 
     if (!city)
         return ctx.reply('Devi inserire una città valida! (/setcity _CITTÀ_)', { parse_mode: 'Markdown' });
 
     try {
 
-        const res = await axios.get(`https://api.openweathermap.org/data/2.5/weather`, {
+        await axios.get(`https://api.openweathermap.org/data/2.5/weather`, {
             params: {
                 q: city,
                 appid: process.env.WEATHER_API_KEY,
@@ -125,71 +122,49 @@ bot.command('setcity', async ctx => {
             }
         });
 
-        const data = res.data;
-        console.log('Città salvata con successo: ', data.name);
-
         const iduser = ctx.from.id;
 
-        db.query('SELECT iduser FROM users WHERE iduser = ?', [iduser], (err, rows) => {
-            
-            if (err)
-                return console.error(err);
-            
-            if (rows.length !== 0) {
+        const [rows] = await db.query('SELECT iduser FROM users WHERE iduser = ?', [iduser]);
 
-                db.query('UPDATE users SET city = ? WHERE iduser = ?', [city, iduser], err => {
-                    if (err) 
-                        return ctx.reply('❌ Errore nel salvataggio. Riprova.');
-                    ctx.reply(`✅ Perfetto! Riceverai ogni mattina il meteo giornaliero di *${city}*.`, { parse_mode: 'Markdown' });
-                });
+        if (rows.length === 0)
+            return ctx.reply('❌ Non sei registrato! Usa /start per registrarti.');
 
-            } else
-                ctx.reply(`❌ Non sei registrato! Utilizza /start per registrarti.`);
+        await db.query('UPDATE users SET city = ? WHERE iduser = ?', [city, iduser]);
 
-        });
+        ctx.reply(`✅ Perfetto! Riceverai ogni sera le previsioni per *${city}*.`, { parse_mode: 'Markdown' });
 
     } catch (err) {
-
-        if (err.response && err.response.status === 404)
-            ctx.reply(`❌ Città "*${city}*" non trovata. Prova a controllare l'ortografia.`, { parse_mode: 'Markdown' });
-        else
-            ctx.reply('⚠️ Errore. Riprova più tardi.');
-
+        if (err.response?.status === 404)
+            ctx.reply(`❌ Città "*${city}*" non trovata.`, { parse_mode: 'Markdown' });
+        else {
+            console.error(err);
+            ctx.reply('⚠️ Errore del server. Riprova più tardi.');
+        }
     }
 
 });
 
 // Unsetcity
-bot.command('unsetcity', ctx => {
+bot.command('unsetcity', async ctx => {
 
     try {
 
         const iduser = ctx.from.id;
 
-        db.query('SELECT iduser FROM users WHERE iduser = ?', [iduser], (err, rows) => {
-            
-            if (err)
-                return console.error(err);
-            
-            if (rows.length !== 0) {
+        const [rows] = await db.query('SELECT iduser FROM users WHERE iduser = ?', [iduser]);
 
-                db.query('UPDATE users SET city = ? WHERE iduser = ?', ["", iduser], err => {
-                    if (err) 
-                        return ctx.reply('❌ Errore nel salvataggio. Riprova.');
-                    ctx.reply(`✅ Città rimossa con successo! Non riceverai più il meteo giornaliero.`);
-                });
+        if (rows.length === 0)
+            return ctx.reply('❌ Non sei registrato! Usa /start per registrarti.');
 
-                console.log('Città rimossa con successo.');
+        await db.query('UPDATE users SET city = "" WHERE iduser = ?', [iduser]);
 
-            } else
-                ctx.reply(`❌ Non sei registrato! Utilizza /start per registrarti.`);
-        
-        });
+        ctx.reply('✅ Città rimossa con successo! Non riceverai più il meteo giornaliero.');
 
     } catch (err) {
-        ctx.reply('⚠️ Errore. Riprova più tardi.');
+        console.error(err);
+        ctx.reply('⚠️ Errore del server. Riprova più tardi.');
     }
-
+    
 });
 
 // Cronjob alle 6:00 per inviare meteo del giorno
